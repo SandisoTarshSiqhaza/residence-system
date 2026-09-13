@@ -51,6 +51,29 @@ CREATE TABLE MaintenanceRequest(
     Priority  TEXT NOT NULL DEFAULT 'Unrated', 'Low', 'Medium', 'High', 'Urgent')),
 Status  TEXT NOT NULL DEFAULT 'Submitted'
 CHECK (Status IN ('Submitted', 'In Progress', 'Resolved', 'Closed')),
+Assigned StaffID INTEGER,
+FOREIGN KEY (StudentID) REFERENCES
+Student (StudentID)
+FOREIGN KEY (RoomID) REFERENCES
+Room(RoomID),
+FOREIGN KEY (CategoryID) REFERENCES 
+Category(CategoryID),
+FOREIGN KEY (AssignedStaffID) REFERENCES 
+Staff(StaffID0
+    );
+
+CREATE TABLE StatusUpdate (
+    LogID  INTEGER PRIMARY KEY AUTOINCREMENT,
+    Request ID  INTEGER NOT NULL,
+    StaffID  INTEGER,
+    Note  TEXT,
+    UpdateDAte  TEXT NOT N ULL DEFAULT (date ('now')),
+    NewStatus  TEXT NOT NULL 
+    CHECK (NewStatus IN ('Submitted', 'In Progress', 'Resolved', 'Closed')),
+    FOREIGN KEY(RequestID) REFERENCES  
+    MaintainceRequest (RequestID),
+    FOREIGN KEY (StaffID 
+
 
 
     
