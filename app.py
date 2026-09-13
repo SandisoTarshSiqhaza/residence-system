@@ -235,4 +235,49 @@ def student_view():
                 taken = set(cur.fetchall())
 
                 available_slots = [f"{s}-{e}" for s, e in TIME_SLOTS if (s, e) not in taken]
-                if 
+                if not availble_slots:
+                    st.info("No slots left for this facility on this date. Try another date.")
+                else:
+                    with st.form("book_facility"):
+                        slot_choice = st.selectbox("Available time slots", available_slots)
+                        book_submitted = st.form_submitted_button("Book This Slot")
+                        if book_submitted:
+                            start_str,  end_str = slot_choice.split("-")
+                            cur.execute(
+                                """INSERT INTO Booking (FacilityID, StudentID, BookingDate, StartTime, EndTime)
+                                Values (?,?,?,?,?);""",
+                                (facility_id, student_id, date_str, start_str, end_str),
+                            )
+                            conn.commit()
+                            st.success("Booking confirmed.")
+                            st.rerun()
+
+        st.subheader("My Bookings")
+        cur.execute(
+            """SELECT b.BookingID, f.FacilityName, b.BookingDate, b.StartTime, b.EndTime, b.Status
+            FROM Booking b
+            JOIN Facility f ON b.FacilityID = f.FacilityID
+            WHERE b.StudentID = ?
+            ORDER BY b.BookingDate DESC, b.StartTime DESC;""",
+            (student_id,),
+        )
+        bookings = cur.fetchall()
+        if bookings :
+            for booking_id,  facility_name, b_date, b_start, b_end, b_status in bookings:
+                col1, cool2 = st.columns([4, 1])
+                with col1:
+                    st.write(f"**{facility_name}** - {b_date}, {b_start}-{b_end} ({b_status})")
+                with col2:
+                    if b_status == "Booked" and st.button("Cancel", key=f"cancel_{booking_id}"):
+                        cur.execute(
+                            "UPDATE Booking SET Status = 'Cancelled' WHERE BookingID = ?;",
+                            (booking_id,),
+                        )
+                        conn.commit()
+                        st.rerun()
+        else:
+            st.info("You have no bookings yet.")
+
+#----------------------------------------------------------------------------
+#VISITORS (SELF SERVICE, REPLACES THE OLD PAPER SIGN-IN BOOK)
+#-----------------------------------------------------------------------------
