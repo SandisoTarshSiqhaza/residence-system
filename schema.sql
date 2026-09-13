@@ -80,7 +80,18 @@ CREATE TABLE StatusUpdate (
 --Facility Booking
 --------------------------------------------------------------------
 CREATE TABLE Facility (
-    Facility
+    FacilityID  INTEGER PRIMARY KEY AUTOINCREMENT,
+    FacilityName  TEXT NOT NULL,
+    FacilityType TEXT NOT NULL CHECK
+    (FaciltityType IN ('Printer ', 'Washing Machuine ', ' Other')),
+    BuildingID  INTEGER NOT NULL, 
+    FOREIGN KEY (Building ID) REFERENCES 
+    Building (BuildingID)
+    );
+
+CREATE TABLE Booking (
+BookingID  INTEGER PRIMARY KEY AUTOINCREMENT,
+
 
 
     
