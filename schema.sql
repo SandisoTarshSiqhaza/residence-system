@@ -91,6 +91,31 @@ CREATE TABLE Facility (
 
 CREATE TABLE Booking (
 BookingID  INTEGER PRIMARY KEY AUTOINCREMENT,
+ FacilityID     INTEGER NOT NULL,
+    StudentID      INTEGER NOT NULL,
+    BookingDate    TEXT NOT NULL,
+    StartTime      TEXT NOT NULL,
+    EndTime        TEXT NOT NULL,
+    Status         TEXT NOT NULL DEFAULT 'Booked'
+                   CHECK (Status IN ('Booked', 'Cancelled', 'Completed')),
+    CreatedAt      TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (FacilityID) REFERENCES Facility(FacilityID),
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID)
+);
+
+-- ---------------------------------------------------------------------
+-- Visitor Sign-In / Sign-Out
+-- ---------------------------------------------------------------------
+CREATE TABLE Visitor (
+    VisitorID      INTEGER PRIMARY KEY AUTOINCREMENT,
+    FullName       TEXT NOT NULL,
+    Phone      TEXT
+    HostStudentID INTEGER NOT NULL,
+    Purpose  TEXT
+    SignInTime  TEXT,
+    FOREIGN KEY (HostStudentID) REFERENCES
+    Student(StudentID)
+    );
 
 
 
