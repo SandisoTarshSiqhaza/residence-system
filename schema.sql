@@ -72,8 +72,15 @@ CREATE TABLE StatusUpdate (
     CHECK (NewStatus IN ('Submitted', 'In Progress', 'Resolved', 'Closed')),
     FOREIGN KEY(RequestID) REFERENCES  
     MaintainceRequest (RequestID),
-    FOREIGN KEY (StaffID 
+    FOREIGN KEY (StaffID ) REFERENCES
+    Staff(StaffID)
+    );
 
+--------------------------------------------------------------------
+--Facility Booking
+--------------------------------------------------------------------
+CREATE TABLE Facility (
+    Facility
 
 
     
